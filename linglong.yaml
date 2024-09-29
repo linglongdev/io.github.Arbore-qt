@@ -1,0 +1,29 @@
+version: "1"
+
+package:
+  id: io.github.Arbore-qt
+  name: Arbore-qt
+  version: 1.3.2.1
+  kind: app
+  description: |
+    Friend-to-friend filesharing app to save the world from dystopia
+
+command:
+  - /opt/apps/io.github.Arbore-qt/files/bin/Arbore-qt
+
+base: org.deepin.foundation/23.0.0
+runtime: org.deepin.Runtime/23.0.1
+
+sources:
+  - kind: git
+    url: https://github.com/MichaelMure/Arbore-qt.git
+    version: master
+    commit: 8329ad1b416dfd43fcc07b29821315f7916cc0a2
+
+build: |
+  cd /project/linglong/sources/Arbore-qt.git
+  git apply ../../../0001-install.patch
+  cd src
+  qmake -makefile PREFIX=${PREFIX} LIB_INSTALL_DIR=${PREFIX}/lib/${TRIPLET}
+  make -j$(nproc)
+  make install
